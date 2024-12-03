@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -10,6 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import InputField from '@/components/InputField';
+import { getCurrentUser, signIn } from '@/lib/appwrite';
+import { useGlobalContext } from '@/context/globalProvider';
 // Form Input Types (for TypeScript users)
 type FormData = {
   email: string;
@@ -25,6 +27,8 @@ const SignIn = () => {
   });
   const [passwordVisible, setPasswordVisible] = useState(false); // Password visibility toggle
   const [errors, setErrors] = useState<FormErrors>({});
+  const {setUser,setLoggedIn}:any = useGlobalContext()
+  const router = useRouter();
 
   // Handle input changes
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -45,13 +49,24 @@ const SignIn = () => {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      Alert.alert('Success', 'You have signed in successfully!');
-      // Handle API sign-in logic here
+      try {
+        const user = await signIn(formData);
+        if(!user) return Error('No User')
+        const result = await getCurrentUser();
+        console.log(result)
+        if(!result) return Error('Could not sign in , please try again later or contact support');
+        setUser(result);
+        setLoggedIn(true);
+        router.replace('/home')
+
+      } catch (error:any) {
+        throw new Error(error);
+      }
     }
   };
 

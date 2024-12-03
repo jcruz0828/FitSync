@@ -1,7 +1,13 @@
-import { router } from "expo-router";
+import { useGlobalContext } from "@/context/globalProvider";
+import { Redirect, router } from "expo-router";
 import { ImageBackground, ScrollView, Text, View, TouchableOpacity } from "react-native";
 
 export default function Index() {
+
+  const {isLoading,isLoggedIn}:any = useGlobalContext();
+  
+   if(!isLoading && isLoggedIn) return <Redirect href = '/home'/>
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }
     }className="bg-primary">

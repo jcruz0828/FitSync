@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   View,
@@ -10,11 +10,14 @@ import {
   Alert,
 } from 'react-native';
 import InputField from '@/components/InputField';
+import { createUser } from '@/lib/appwrite';
+import { useGlobalContext } from '@/context/globalProvider';
 // Form Data and Errors Types (for TypeScript users)
 type FormData = {
   name: string;
   email: string;
   password: string;
+  username:string;
 };
 
 type FormErrors = Partial<FormData>;
@@ -24,10 +27,12 @@ const SignUp = () => {
     name: '',
     email: '',
     password: '',
+    username:'',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [passwordVisible, setPasswordVisible] = useState(false); // Password visibility toggle
+  const {setUser,setLoggedIn}:any = useGlobalContext()
 
   // Handle input changes
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -51,13 +56,21 @@ const SignUp = () => {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       Alert.alert('Success', 'Your account has been created!');
-      // Handle API sign-up logic here
+      try {
+        const user  = await createUser(formData);
+        if(!user) return Error('User could not be created, try again later or contact support');
+        setUser(user);
+        setLoggedIn(true);
+        router.replace('/home')
+        } catch (error:any) {
+          throw Error(error);
+      }
     }
   };
 
@@ -80,6 +93,12 @@ const SignUp = () => {
             value={formData.name}
             onChangeText={(value) => handleInputChange('name', value)}
             error={errors.name}
+          />
+           <InputField
+            placeholder="User Name"
+            value={formData.username}
+            onChangeText={(value) => handleInputChange('username', value)}
+            error={errors.username}
           />
           <InputField
             placeholder="Email Address"

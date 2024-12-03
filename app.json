@@ -8,6 +8,13 @@
     "scheme": "FitSync",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "extra":{
+      "APPWRITE_ENDPOINT" :"https://cloud.appwrite.io/v1",
+      "APPWRITE_PLATFORM" : "com.jcoytfined.fitsync",
+      "APPWRITE_PROJECT" : "674e546f000853f8d623",
+      "APPWRITE_USER" : "674e550100130ce43ad1",
+      "APPWRITE_DB" : "674e54fb000ef74af0d9"
+    },
     "ios": {
       "supportsTablet": true
     },

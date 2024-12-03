@@ -3,6 +3,8 @@ import "../global.css";
 import { useFonts } from "expo-font";
 import React, { useEffect } from "react";
 import { StatusBar } from "react-native";
+import { GlobalProvider } from "@/context/globalProvider";
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -32,11 +34,12 @@ export default function RootLayout() {
   if(!fontsLoaded && !error) return null;
 
   return (
-    
+    <GlobalProvider>
     <Stack screenOptions={{headerShown:false}}>
       <Stack.Screen name="index"  options={{ headerShown: false }}/>
       <Stack.Screen name= '(auth)' options={{headerShown:false}}/>
       <Stack.Screen name= '(tabs)' options={{headerShown:false}}/>
     </Stack>
+    </GlobalProvider>
   );
 }
