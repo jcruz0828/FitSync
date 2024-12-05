@@ -12,7 +12,7 @@ export default function Index() {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }
     }className="bg-primary">
       <ImageBackground
-        source={require('/Users/josecoyt/Desktop/FitSync/assets/fonts/images/fit-sync-bg.png')}
+        source= {require('../assets/images/fit-sync-bg.png')}
         className="flex-1 bg-cover"
       >
         {/* Main Container */}

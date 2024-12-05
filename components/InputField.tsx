@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity ,Image} from 'react-native';
 import React from 'react';
 
 interface InputFieldProps {
@@ -9,6 +9,8 @@ interface InputFieldProps {
   error?: string;
   keyboardType?: 'default' | 'email-address';
   toggleVisibility?: () => void; // Function to toggle password visibility
+  customStyle?:string;
+  image:any;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -19,8 +21,10 @@ const InputField: React.FC<InputFieldProps> = ({
   error,
   keyboardType = 'default',
   toggleVisibility,
+  customStyle,
+  image
 }) => (
-  <View className="w-full mb-4">
+  <View className="w-full mb-4 justify-center items-center">
     <View className="relative">
       {/* Text Input */}
       <TextInput
@@ -30,7 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
-        className="bg-gray-800 text-white px-4 py-3 rounded-md"
+        className={`bg-gray-800 text-white px-4 py-3 rounded-md ${customStyle}`}
       />
       
       {/* Toggle Visibility Icon */}
